@@ -14,8 +14,6 @@ MLflow, and a live prediction API — orchestrated with Docker Compose.
 - [x] **Phase 2** — Spark loads NYC taxi data into a partitioned Iceberg table
 - [x] **Phase 3** — ML lifecycle with MLflow (tracking + model registry)
 - [x] **Phase 5** — Model served as a live prediction API
-- [ ] **Phase 4** — Flink streaming ingest (optional)
-- [ ] **Phase 6** — Security layer (auth, TLS, least-privilege DB)
 
 ---
 
