@@ -71,6 +71,27 @@ services:
       --backend-store-uri postgresql://iceberg:iceberg123@postgres:5432/mlflow
       --artifacts-destination s3://mlflow/"
 
+  ray:
+    image: rayproject/ray:2.37.0-py310
+    container_name: lakehouse-ray
+    depends_on:
+      - mlflow
+      - minio
+    ports:
+      - "8000:8000"
+      - "8265:8265"
+    shm_size: "4gb"
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      MLFLOW_S3_ENDPOINT_URL: http://minio:9000
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin123
+      AWS_REGION: us-east-1
+    volumes:
+      - ../serving:/app
+    working_dir: /app
+    entrypoint: ["tail", "-f", "/dev/null"]
+
 volumes:
   minio-data:
   postgres-data:
