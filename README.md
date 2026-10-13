@@ -13,7 +13,7 @@ MLflow, and a live prediction API — orchestrated with Docker Compose.
 - [x] **Phase 1** — Infrastructure (MinIO + Postgres on Docker)
 - [x] **Phase 2** — Spark loads NYC taxi data into a partitioned Iceberg table
 - [x] **Phase 3** — ML lifecycle with MLflow (tracking + model registry)
-- [x] **Phase 5** — Model served as a live prediction API
+- [x] **Phase 4** — Model served as a live prediction API
 
 ---
 
@@ -104,7 +104,7 @@ Trains linear regression + random forest, logs both to MLflow, and registers
 the lower-MAE model as `taxi-duration-model`. (Random forest wins: ~3.3 min
 MAE vs ~4.8 for linear regression.)
 
-### Phase 5 — Serve predictions
+### Phase 4 — Serve predictions
 
 ```bash
 docker exec -d lakehouse-ray bash -c "cd /app && uvicorn app:app --host 0.0.0.0 --port 8000 > /tmp/api.log 2>&1"
@@ -162,8 +162,8 @@ lakehouse-ml/
 ├── spark/load_taxi.py           # Phase 2: load into Iceberg
 ├── ml/train.py                  # Phase 3: train + log to MLflow
 ├── spark/register_best.py       # Phase 3: register best model
-├── serving/app.py               # Phase 5: FastAPI prediction API
-├── serving/serve_model.py       # Phase 5: Ray Serve (production target)
+├── serving/app.py               # Phase 4: FastAPI prediction API
+├── serving/serve_model.py       # Phase 4: Ray Serve (production target)
 ├── data/                        # downloaded parquet (gitignored)
 ├── .env                         # credentials (gitignored)
 └── README.md
