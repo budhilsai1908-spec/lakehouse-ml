@@ -50,6 +50,27 @@ services:
       - spark-ivy:/home/spark/.ivy2
     entrypoint: ["tail", "-f", "/dev/null"]
 
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.17.2
+    container_name: lakehouse-mlflow
+    depends_on:
+      - minio
+      - postgres
+    ports:
+      - "5000:5000"
+    environment:
+      MLFLOW_S3_ENDPOINT_URL: http://minio:9000
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin123
+      AWS_REGION: us-east-1
+    command: >
+      bash -c "pip install psycopg2-binary boto3 &&
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri postgresql://iceberg:iceberg123@postgres:5432/mlflow
+      --artifacts-destination s3://mlflow/"
+
 volumes:
   minio-data:
   postgres-data:
